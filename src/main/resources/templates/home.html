@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home</title>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link href="/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="w3-light-grey">
+<div class="w3-container w3-blue-grey w3-opacity w3-right-align">
+	<h1 align="center">Converter</h1>
+</div>
+<div>
+	<form method="post" th:align="center">
+		<h3>Введите сумму</h3>
+		<select name="fromCurrency">
+			<option>Из</option>
+			<option th:each="currency : ${currencies}"
+					th:value="${currency.id}"
+					th:text="${currency.charCode}">
+			</option>
+			<input type="text" th:name="sum" th:value="${sum}"><br />
+		</select>
+		<select name="toCurrency">
+			<option  >В</option>
+			<option th:each="currency : ${currencies}"
+					th:value="${currency.id}"
+					th:text="${currency.charCode}">
+			</option>
+		</select>
+		<button type="submit" name="convert" class="form-style-5">Submit</button>
+		<h3 th:text="${from}">result</h3>
+		<h3 th:text="${to}">result</h3>
+		<h2 th:text="${result}">result</h2>
+	</form>
+
+</select>
+</div>
+<table class="form-style-5" border="1">
+	<thead>
+	<tr>
+		<th>Name</th>
+		<th>Name</th>
+		<th>Result</th>
+		<th>Date</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr th:each="history : ${histories}">
+		<td th:text="${history.fromStr}">from</td>
+		<td th:text="${history.toStr}">from</td>
+		<td th:text="${history.result}">result</td>
+		<td th:text="${history.date}">date</td>
+	</tr>
+	</tbody>
+</table>
+<div class="w3-container w3-grey w3-opacity w3-right-align w3-padding">
+	<form method="post">
+	<button type="submit" name="exit" class="w3-btn w3-round-large">Exit</button>
+	</form>
+</div>
+</body>
+</html>

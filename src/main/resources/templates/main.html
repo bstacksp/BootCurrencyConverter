@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Converter</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body class="w3-light-grey">
+<div class="w3-container w3-blue-grey w3-opacity w3-right-align">
+	<h1 align="center">Converter</h1>
+</div>
+<div align="center">
+	<h2>Users</h2>
+	<table border="1">
+		<thead>
+		<tr>
+			<th>Id</th>
+			<th>Login</th>
+			<th>Password</th>
+			<th>Action</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="users : ${users}">
+			<td th:text="${users.id}">ID</td>
+			<td th:text="${users.login}">login</td>
+			<td th:text="${users.password}">password</td>
+			<td>
+				<form method="post"><button th:value="${users.id}" name="delete">delete</button> </form>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+<div class="w3-container w3-center">
+	<div class="w3-bar w3-padding-large w3-padding-24">
+		<button class="w3-btn w3-hover-light-blue w3-round-large" onclick="location.href='login'">Log In</button>
+		<button class="w3-btn w3-hover-green w3-round-large" onclick="location.href='signup'">Sign up</button>
+	</div>
+</div>
+</body>
+</html>
