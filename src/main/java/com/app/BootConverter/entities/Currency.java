@@ -22,12 +22,12 @@ public class Currency {
 	String charCode;
 
 	@Column(name = "nominal")
-	Integer nominal;
+	Long nominal;
 
 	@Column(name = "value")
 	Double value;
 
-	public Currency(String name, String charCode, Integer nominal, Double value) {
+	public Currency(String name, String charCode, Long nominal, Double value) {
 		this.name = name;
 		this.charCode = charCode;
 		this.nominal = nominal;

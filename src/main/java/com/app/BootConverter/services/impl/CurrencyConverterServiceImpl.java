@@ -38,7 +38,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 	}
 
 	@Override
-	public Integer getNominal(Long id) {
+	public Long getNominal(Long id) {
 		return currenciesRepository.getOne(id).getNominal();
 	}
 
@@ -54,6 +54,8 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
 	@Override
 	public Double convert(String amount, String from, String to) {
+
+		log.info("Currency's value = " +  getValue(Long.parseLong(from)));
 		return (Double.parseDouble(amount)
 				* getValue(Long.parseLong(from))
 				/ getNominal(Long.parseLong(from))
@@ -69,7 +71,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 					.parser(Parser.xmlParser()).get();
 			Elements elements = doc.getElementsByTag("Valute");
 			if (currenciesRepository.findById(1L).isEmpty()) {
-				Currency Ruble = new Currency("Российский рубль", "RUR", 1, 1.0);
+				Currency Ruble = new Currency("Российский рубль", "RUR", 1L, 1.0);
 				currenciesRepository.save(Ruble);
 			}
 			long i = 2;
@@ -79,7 +81,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 				if(currencyToUpdate.isEmpty()) {
 					String charCode = e.child(1).text();
 					String name = e.child(3).text();
-					Integer nominal = Integer.parseInt(e.child(2).text());
+					Long nominal = Long.parseLong(e.child(2).text());
 					Double value = Double.parseDouble(e.child(4).text().replace(",", "."));
 					Currency currency = new Currency(name, charCode, nominal, value);
 					currenciesRepository.save(currency);

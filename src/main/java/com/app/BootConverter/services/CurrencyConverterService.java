@@ -9,7 +9,7 @@ public interface CurrencyConverterService {
 
 	String getName(String id);
 
-	Integer getNominal(Long id);
+	Long getNominal(Long id);
 
 	Double getValue(Long id);
 

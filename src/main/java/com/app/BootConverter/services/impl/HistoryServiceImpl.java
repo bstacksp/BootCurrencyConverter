@@ -39,10 +39,7 @@ public class HistoryServiceImpl implements HistoryService {
 			HistoryFormDto history = new HistoryFormDto(
 					his.getFromCurrencyId().getCharCode(),
 					his.getToCurrencyId().getCharCode(),
-					his.getFromCurrencyId().getValue()
-							/ his.getFromCurrencyId().getNominal()
-							/ his.getToCurrencyId().getValue()
-							* his.getToCurrencyId().getNominal(),
+					his.getValue(),
 					his.getDate());
 			historyFormDtoList.add(history);
 		}
@@ -53,26 +50,29 @@ public class HistoryServiceImpl implements HistoryService {
 	public void saveToHistory(User user, String fromCurrency,
 							  String toCurrency) {
 		Date date = new Date();
-		History history = new History(usersRepository.getByLogin(user.getLogin()),
+		History newNote = new History(usersRepository.getByLogin(user.getLogin()),
 				currenciesRepository.getOne(Long.parseLong(fromCurrency)),
 				currenciesRepository.getOne(Long.parseLong(toCurrency)),
 				currenciesRepository.getOne(Long.parseLong(fromCurrency)).getValue()
 						/ currenciesRepository.getOne(Long.parseLong(fromCurrency)).getNominal()
 						/ currenciesRepository.getOne(Long.parseLong(toCurrency)).getValue()
 						* currenciesRepository.getOne(Long.parseLong(toCurrency)).getNominal(), date);
-		List<History> checkHistory = historyRepository.findByFromCurrencyIdAndToCurrencyId(
+		List<History> notes = historyRepository.findByFromCurrencyIdAndToCurrencyId(
 				currenciesRepository.getOne(Long.parseLong(fromCurrency)),
 				currenciesRepository.getOne(Long.parseLong(toCurrency)));
 
 		boolean flag = true;
-		DecimalFormat df = new DecimalFormat("#.######");
-		for (History his : checkHistory) {
-			log.info("{} {}", his.getValue(), df.format(history.getValue()));
-			if (his.getFromCurrencyId().getValue().equals(history.getFromCurrencyId().getValue())
-					&& (his.getToCurrencyId().getValue().equals(history.getToCurrencyId().getValue())))
+		DecimalFormat df = new DecimalFormat("#.#####");
+		for (History oldNote : notes) {
+			log.info("{} {}", df.format(oldNote.getValue()), df.format(newNote.getValue()));
+			if (df.format(oldNote.getValue()).equals(df.format(newNote.getValue()))
+					&& df.format(oldNote.getValue()).equals(df.format(newNote.getValue())))
 				flag = false;
+			log.info(flag + "Value = " + newNote.getValue());
 		}
-		if (flag)
-			historyRepository.save(history);
+		if (flag) {
+			historyRepository.save(newNote);
+			log.info("Save new note to history");
+		}
 	}
 }

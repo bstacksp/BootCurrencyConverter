@@ -1,6 +1,7 @@
 package com.app.BootConverter.services.impl;
 
 import com.app.BootConverter.entities.User;
+import com.app.BootConverter.repositories.HistoryRepository;
 import com.app.BootConverter.repositories.UsersRepository;
 import com.app.BootConverter.services.UserService;
 import org.slf4j.Logger;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UsersRepository usersRepository;
+
+	@Autowired
+	HistoryRepository historyRepository;
 
 	@Override
 	public Boolean login(String login, String password) {

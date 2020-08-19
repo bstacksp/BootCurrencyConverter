@@ -40,20 +40,26 @@ public class HomePageController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String converterPost (Model model, HttpServletRequest request) {
 		if( request.getParameter("convert") != null && !request.getParameter("sum").equals("")) {
-			model.addAttribute("sum", request.getParameter("sum"));
-			model.addAttribute("result",
-					converterService.convert(
-							request.getParameter("sum"),
-							request.getParameter("fromCurrency"),
-							request.getParameter("toCurrency")));
-			model.addAttribute("from",
-					converterService.getName(request.getParameter("fromCurrency")));
-			model.addAttribute("to",
-					converterService.getName(request.getParameter("toCurrency")));
-			HttpSession session = request.getSession();
-			historyService.saveToHistory((User) session.getAttribute("user"),
-					request.getParameter("fromCurrency"),
-					request.getParameter("toCurrency"));
+			try {
+				model.addAttribute("sum", request.getParameter("sum"));
+				model.addAttribute("result",
+						converterService.convert(
+								request.getParameter("sum"),
+								request.getParameter("fromCurrency"),
+								request.getParameter("toCurrency")));
+				model.addAttribute("from",
+						converterService.getName(request.getParameter("fromCurrency")));
+				model.addAttribute("to",
+						converterService.getName(request.getParameter("toCurrency")));
+				HttpSession session = request.getSession();
+				historyService.saveToHistory((User) session.getAttribute("user"),
+						request.getParameter("fromCurrency"),
+						request.getParameter("toCurrency"));
+			}
+			catch (IllegalArgumentException e) {
+				return "redirect:/home";
+			}
+
 		}
 		if (request.getParameter("exit") != null) {
 			HttpSession session = request.getSession();
